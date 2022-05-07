@@ -1,0 +1,33 @@
+title: Gosh dashboard
+showtitle: false
+port: 8080
+sets:
+  - name: News
+    icon: fa-newspaper
+    sites:
+      - name: DN.se
+        url: https://dn.se
+      - name: Feber
+        url: https://feber.se
+      - name: Hacker news
+        url: https://news.ycombinator.com/
+      - name: Verge
+        url: https://www.theverge.com/
+      - name: Engadget
+        url: https://www.engadget.com/
+  - name: Search
+    icon: fa-search
+    sites:
+      - name: Google
+        url: https://google.com
+      - name: Duck duck go
+        url: https://duckduckgo.com/
+      - name: Bing
+        url: https://bing.com
+  - name: Home automation
+    icon: fa-server
+    sites:
+      - name: Docker
+        url: https://www.docker.com/
+      - name: Home assistant
+        url: https://www.home-assistant.io/
