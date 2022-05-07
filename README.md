@@ -49,7 +49,8 @@ sets:
 To run this with a persisted config (and favicons) you can run it like this. 
 
 ```bash
-docker run -v ${pwd}/config.yml:/config.yml -v ${pwd}/favicons:/favicons -p 8080:8080 gosh
+docker run -v $(pwd)/config.yml:/config.yml -v $(pwd)/favicons:/favicons -p 9090:8080 stenehall/gosh:latest
+
 ```
 
 ## 
