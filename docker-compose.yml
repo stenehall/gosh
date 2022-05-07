@@ -2,7 +2,7 @@ version: "3.9"
 services:
   gosh:
     container_name: gosh
-    image: gosh
+    image: stenehall/gosh:latest
     restart: unless-stopped
     user: 1000:1000
     volumes:
