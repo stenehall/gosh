@@ -1,37 +1,55 @@
-## Welcome to GitHub Pages
+A minimal dashoard written in Go.
 
-You can use the [editor on GitHub](https://github.com/stenehall/gosh/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+![Dashboard example](assets/screenshot.png)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Here's a tiny example of what a config file might look like.
 
-### Markdown
+For each set you can define a name and an icon. 
+For each site you can define a name, an url and an icon. If you define an icon gosh will not attempt to download the favicon but instead use the icon provided.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+```yaml
+title: Gosh dashboard
+showtitle: false
+port: 8080
+sets:
+  - name: News
+    icon: fa-newspaper
+    sites:
+      - name: DN.se
+        url: https://dn.se
+      - name: Feber
+        url: https://feber.se
+      - name: Hacker news
+        url: https://news.ycombinator.com/
+      - name: Verge
+        url: https://www.theverge.com/
+      - name: Engadget
+        url: https://www.engadget.com/
+  - name: Search
+    icon: fa-search
+    sites:
+      - name: Google
+        url: https://google.com
+      - name: Duck duck go
+        url: https://duckduckgo.com/
+      - name: Bing
+        url: https://bing.com
+  - name: Home automation
+    icon: fa-server
+    sites:
+      - name: Docker
+        url: https://www.docker.com/
+      - name: Home assistant
+        url: https://www.home-assistant.io/
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+## Run
 
-### Jekyll Themes
+To run this with a persisted config (and favicons) you can run it like this. 
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/stenehall/gosh/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+```bash
+docker run -v ${pwd}/config.yml:/config.yml -v ${pwd}/favicons:/favicons -p 8080:8080 gosh
+```
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## 
