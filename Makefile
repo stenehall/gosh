@@ -11,9 +11,11 @@ build:
 
 publish: build-docker
 	docker push stenehall/gosh:$(VERSION)
+	docker tag stenehall/gosh:$(VERSION) stenehall/gosh:latest
+	docker push stenehall/gosh:latest
 
 build-docker:
-	docker build -t gosh:$(VERSION) --no-cache --build-arg BUILD_DATE=$(DATE) --build-arg BUILD_VERSION=$(VERSION) .
+	docker build -t stenehall/gosh:$(VERSION) --no-cache --build-arg BUILD_DATE=$(DATE) --build-arg BUILD_VERSION=$(VERSION) .
 
 docker-up:
 	docker compose up
