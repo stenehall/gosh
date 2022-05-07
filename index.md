@@ -1,5 +1,7 @@
 A minimal dashoard written in Go.
 
+![Dashboard example](assets/screenshot.png)
+
 Here's a tiny example of what a config file might look like.
 
 For each set you can define a name and an icon. 
