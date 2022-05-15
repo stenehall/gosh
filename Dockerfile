@@ -33,7 +33,7 @@ USER nonroot:nonroot
 WORKDIR /
 COPY --from=builder --chown=nonroot:nonroot /app/gosh /gosh
 COPY --from=builder --chown=nonroot:nonroot /app/assets /assets
-COPY --chown=nonroot:nonroot web /web
+COPY --chown=nonroot:nonroot templates /templates
 
 HEALTHCHECK --interval=60s --timeout=5s --start-period=2s --retries=3 CMD ["/gosh", "-health"]
 
