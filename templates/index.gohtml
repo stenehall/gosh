@@ -54,7 +54,7 @@
       {{range .Sites}}
         <a class="drop-shadow-sm bg-gradient-to-br from-gray-200/90 to-gray-100/90 dark:from-gray-900 dark:to-gray-800 hover:from-gray-100 hover:to-gray-200 dark:hover:from-gray-800 dark:hover:to-gray-900 shadow-lg text-xl w-full rounded relative flex items-stretch"
            href="{{.URL}}">
-          <img class="bg-white dark:bg-slate-800 p-4 h-[4rem] mr-2" style="background-color: {{.BackgroundColor}}" src="{{.Icon}}"/>
+          <img class="bg-white dark:bg-slate-800 p-4 h-[4rem] mr-2" style="background-color: {{.BackgroundColor}}" src="{{.Icon}}" alt="{{.Name}}"/>
           <div class="pl-4 flex items-center flex-grow h-100">
               {{.Name}}
           </div>
