@@ -95,7 +95,7 @@ func (f *Favvo) UpdateSite(site Site) (Site, error) {
 }
 
 func downloadFavicon(site Site, iconURL string) (string, error) {
-	// Accept self signed ssl certs
+	// Accept self-signed ssl certs
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}

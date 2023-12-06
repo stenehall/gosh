@@ -2,55 +2,76 @@ package web
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
-	"os"
-	"strconv"
 
-	"github.com/gin-gonic/contrib/secure"
-	"github.com/gin-gonic/gin"
+	"github.com/NYTimes/gziphandler"
 	"github.com/stenehall/gosh/internal/config"
 )
 
 const (
-	CSP = "default-src 'unsafe-inline' 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com"
+	CSP = "default-src 'self'; style-src 'self' 'unsafe-inline'"
 )
 
-// Ginning is the main entry for the web server functionality of Gosh.
-func Ginning(gosh config.Gosh) error {
-	env := os.Getenv("APP_ENV")
-	if env == "production" {
-		gin.SetMode(gin.ReleaseMode)
-	}
-
-	router := gin.Default()
-	router.Use(secure.Secure(secure.Options{
-		ContentSecurityPolicy: CSP,
-	}))
-
-	router.Static("/assets", "./assets")
-	router.Static("/favicons", "./favicons")
-	router.LoadHTMLGlob("web/*.gohtml")
-
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.gohtml", gin.H{
-			"title":      gosh.Title,
-			"sets":       gosh.Sets,
-			"showTitle":  gosh.ShowTitle,
-			"background": gosh.Background,
-		})
-	})
-
-	router.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"status": "OK",
-		})
-	})
-
+// Server is the main entry for the templates server functionality of Gosh.
+func Server(gosh config.Gosh) error {
 	log.Printf("Serving gosh on port %d\n\n", gosh.Port)
-	if err := router.Run(":" + strconv.Itoa(gosh.Port)); err != nil {
-		return fmt.Errorf("error starting gin %w", err)
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+
+	data := struct {
+		Title      string
+		ShowTitle  bool
+		Background string
+		Sets       []config.Set
+	}{
+		Title:      gosh.Title,
+		ShowTitle:  gosh.ShowTitle,
+		Background: gosh.Background,
+		Sets:       gosh.Sets,
+	}
+	ts, tmplError := template.ParseFiles("templates/index.gohtml")
+
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets/"))))
+	http.Handle("/favicons/", http.StripPrefix("/favicons/", http.FileServer(http.Dir("favicons/"))))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if tmplError != nil {
+			log.Println(tmplError.Error())
+			http.Error(w, "Internal Server Error", 500)
+			return
+		}
+
+		err := ts.Execute(w, data)
+		if err != nil {
+			log.Println(err.Error())
+			http.Error(w, "Internal Server Error", 500)
+		}
+	})
+
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		_, err := w.Write([]byte("OK"))
+		if err != nil {
+			log.Println(err)
+		}
+		return
+	})
+
+	err := http.ListenAndServe(":"+fmt.Sprint(gosh.Port), logRequest(http.DefaultServeMux))
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	return nil
+}
+
+func logRequest(handler http.Handler) http.Handler {
+	return gziphandler.GzipHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("%s %s %s\n", r.RemoteAddr, r.Method, r.URL)
+
+		header := w.Header()
+		header.Set("Content-Security-Policy", CSP)
+
+		handler.ServeHTTP(w, r)
+	}))
 }

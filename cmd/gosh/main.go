@@ -62,7 +62,7 @@ func main() {
 		}
 	}
 
-	if err := web.Ginning(conf.Data); err != nil {
-		log.Printf("error from Gin %v", err)
+	if err := web.Server(conf.Data); err != nil {
+		log.Printf("error from Server %v", err)
 	}
 }

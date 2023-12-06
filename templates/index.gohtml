@@ -1,18 +1,18 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>{{.title}}</title>
+  <title>{{.Title}}</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css"/>
   <link rel="shortcut icon" type="image/svg" href="/assets/favicon.svg"/>
   {{/*  <script src="https://cdn.tailwindcss.com"></script>*/}}
-  <script>
-      // tailwind.config = {}
-  </script>
+  {{/*  <script>*/}}
+  {{/*       tailwind.config = {}*/}}
+  {{/*  </script>*/}}
   <style>
-      {{if .background}}
-        background: url({{.background}});
+      {{if .Background}}
+        background: url({{.Background}});
         background-size: cover;
       {{else}}
       body {
@@ -38,12 +38,12 @@
   </style>
 </head>
 <body class="m-6 md:m-12 lg:m-24 bg-slate-100 dark:bg-slate-900 dark:text-white min-h-screen">
-{{if .showTitle}}
+{{if .ShowTitle}}
 <h1 class="text-3xl font-bold mb-8">
-    {{.title}}
+    {{.Title}}
 </h1>
 {{end}}
-{{range .sets}}
+{{range .Sets}}
   <h2 class="text-2xl font-bold mt-16 mb-4">
       {{if .Icon}}
         <i class="fa-solid {{.Icon}}"></i>
@@ -54,7 +54,7 @@
       {{range .Sites}}
         <a class="drop-shadow-sm bg-gradient-to-br from-gray-200/90 to-gray-100/90 dark:from-gray-900 dark:to-gray-800 hover:from-gray-100 hover:to-gray-200 dark:hover:from-gray-800 dark:hover:to-gray-900 shadow-lg text-xl w-full rounded relative flex items-stretch"
            href="{{.URL}}">
-          <img class="bg-white dark:bg-slate-800 p-4 h-[4rem] mr-2" style="background-color: {{.BackgroundColor}}" src="{{.Icon}}"/>
+          <img class="bg-white dark:bg-slate-800 p-4 h-[4rem] mr-2" style="background-color: {{.BackgroundColor}}" src="{{.Icon}}" alt="{{.Name}}"/>
           <div class="pl-4 flex items-center flex-grow h-100">
               {{.Name}}
           </div>
